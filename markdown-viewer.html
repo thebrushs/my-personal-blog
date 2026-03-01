@@ -188,12 +188,8 @@
             }
 
             try {
-                // 构建完整的URL路径，确保在GitHub Pages上也能正常工作
-                const baseUrl = window.location.origin;
-                const filePath = file.startsWith('/') ? file : `/${file}`;
-                const fullUrl = baseUrl + filePath;
-                
-                const response = await fetch(fullUrl);
+                // 使用相对路径，确保在GitHub Pages上也能正常工作
+                const response = await fetch(file);
                 if (!response.ok) {
                     throw new Error('文件加载失败');
                 }
