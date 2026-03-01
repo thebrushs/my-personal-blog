@@ -1,0 +1,29 @@
+{
+  "name": "study-record-app",
+  "version": "1.0.0",
+  "description": "个人学习记录应用 - 多端分离架构",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "server": "npm run dev --workspace=server",
+    "web": "npm run dev --workspace=web-frontend",
+    "build:server": "npm run build --workspace=server",
+    "build:web": "npm run build --workspace=web-frontend",
+    "lint": "npm run lint --workspaces",
+    "test": "npm run test --workspaces"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "study-record",
+    "wechat-miniprogram",
+    "vue3",
+    "express",
+    "nextjs"
+  ],
+  "author": "",
+  "license": "MIT"
+}

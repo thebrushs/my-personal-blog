@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Viewer</title>
+    <style>
+        :root {
+            --primary-color: #2c7a7b; /* 蓝绿色 */
+            --accent-color: #4fd1c5;  /* 淡青色 */
+            --bg-color: #ffffff;      /* 白色背景 */
+            --bg-secondary: #f0f7f4;  /* 淡绿背景 */
+            --text-color: #2d3748;    /* 主要文字 */
+            --text-light: #718096;    /* 次要文字 */
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --max-width: 800px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-secondary);
+        }
+
+        .container {
+            background-color: var(--bg-color);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--primary-color);
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        h1 {
+            font-size: 2rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.3em;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.3em;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 16px;
+            padding-left: 2em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        code {
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            background-color: #f7fafc;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+        }
+
+        pre {
+            background-color: #f7fafc;
+            padding: 16px;
+            border-radius: var(--border-radius);
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            padding-left: 16px;
+            margin: 0 0 16px 0;
+            color: var(--text-light);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="content" class="loading">加载中...</div>
+        <a href="blog.html" class="back-link">返回博客</a>
+    </div>
+
+    <script>
+        // 简单的Markdown解析器
+        function markdownToHtml(markdown) {
+            // 标题
+            markdown = markdown.replace(/^# (.*)$/gm, '<h1>$1</h1>');
+            markdown = markdown.replace(/^## (.*)$/gm, '<h2>$1</h2>');
+            markdown = markdown.replace(/^### (.*)$/gm, '<h3>$1</h3>');
+            
+            // 粗体和斜体
+            markdown = markdown.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            markdown = markdown.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            
+            // 链接
+            markdown = markdown.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>');
+            
+            // 列表
+            markdown = markdown.replace(/^- (.*)$/gm, '<li>$1</li>');
+            markdown = markdown.replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>');
+            
+            // 代码块
+            markdown = markdown.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            
+            // 行内代码
+            markdown = markdown.replace(/`([^`]+)`/g, '<code>$1</code>');
+            
+            // 引用
+            markdown = markdown.replace(/^> (.*)$/gm, '<blockquote>$1</blockquote>');
+            
+            // 段落
+            markdown = markdown.replace(/^(?!<h[1-6]>)(?!<ul>)(?!<li>)(?!<pre>)(?!<blockquote>)(.*)$/gm, '<p>$1</p>');
+            
+            return markdown;
+        }
+
+        // 获取URL参数
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // 加载并显示Markdown文件
+        async function loadMarkdown() {
+            const file = getUrlParam('file');
+            if (!file) {
+                document.getElementById('content').innerHTML = '<p>错误：未指定Markdown文件</p>';
+                return;
+            }
+
+            try {
+                // 构建完整的URL路径，确保在GitHub Pages上也能正常工作
+                const baseUrl = window.location.origin;
+                const filePath = file.startsWith('/') ? file : `/${file}`;
+                const fullUrl = baseUrl + filePath;
+                
+                const response = await fetch(fullUrl);
+                if (!response.ok) {
+                    throw new Error('文件加载失败');
+                }
+                const markdown = await response.text();
+                const html = markdownToHtml(markdown);
+                document.getElementById('content').innerHTML = html;
+            } catch (error) {
+                document.getElementById('content').innerHTML = `<p>错误：${error.message}</p>`;
+            }
+        }
+
+        // 页面加载时执行
+        window.onload = loadMarkdown;
+    </script>
+</body>
+</html>
