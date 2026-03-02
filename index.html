@@ -34,7 +34,7 @@
             <!-- 头像链接 -->
             <img src="pic/picture1.jpg" alt="Avatar" class="avatar">
             <h1>你好，我是 Jimmy</h1>
-            <p>一个喜欢研究学习各种有意思的项目的练习生<br>人生犹旷野，走一步算一步。</p>
+            <p>一个喜欢研究学习各种有意思的项目的练习生<br>人生犹如旷野，走一步算一步。</p>
             <div class="social-btns">
                 <a href="https://github.com/thebrushs" class="btn">GitHub</a>
                 <a href="PDF/个人简历-1.pdf" class="btn-outline">简历下载</a>
@@ -133,10 +133,19 @@
     <!-- 页脚 -->
     <footer id="contact">
         <div class="container">
-            <p>&copy; 2026 Jimmy. Designed for GitHub.</p>
+            <p>&copy; 2026 Jimmy. Copyright Reserved. Designed for GitHub.</p>
             <p style="margin-top: 10px;">
-                <a href="mailto:307587116@qq.com">Email Me</a> 
+                <a href="mailto:307587116@qq.com">Email Me</a> | 
+                <a href="javascript:void(0)" onclick="showWechat()">WeChat</a>
             </p>
+            <div id="wechat-modal" class="modal" onclick="closeWechat()">
+                <div class="modal-content" onclick="event.stopPropagation()">
+                    <span class="close-btn" onclick="closeWechat()">&times;</span>
+                    <h3>微信号</h3>
+                    <p class="wechat-id">13288952224</p>
+                    <button class="copy-btn" onclick="copyWechat()">复制微信号</button>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -161,6 +170,19 @@
                 }
             });
         });
+
+        // 微信弹窗功能
+        function showWechat() {
+            document.getElementById('wechat-modal').style.display = 'flex';
+        }
+        function closeWechat() {
+            document.getElementById('wechat-modal').style.display = 'none';
+        }
+        function copyWechat() {
+            navigator.clipboard.writeText('13288952224').then(() => {
+                alert('微信号已复制: 13288952224');
+            });
+        }
     </script>
 </body>
 </html>
