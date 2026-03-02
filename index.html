@@ -4,206 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的个人空间 | GitHub Project</title>
-    <style>
-        /* --- CSS 变量 --- */
-        :root {
-            --primary-color: #2c7a7b; /* 蓝绿色 */
-            --accent-color: #4fd1c5;  /* 淡青色 */
-            --bg-color: #ffffff;      /* 白色背景 */
-            --bg-secondary: #f0f7f4;  /* 淡绿背景 */
-            --text-color: #2d3748;    /* 主要文字 */
-            --text-light: #718096;    /* 次要文字 */
-            --border-radius: 8px;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            --max-width: 900px;
-        }
-
-        /* --- 基础重置 --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        a:hover { color: var(--accent-color); }
-        ul { list-style: none; }
-
-        /* --- 布局容器 --- */
-        .container {
-            max-width: var(--max-width);
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* --- 导航栏 --- */
-        header {
-            padding: 20px 0;
-            border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-        }
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
-        .nav-links { display: flex; gap: 20px; }
-        .nav-links a { font-weight: 500; font-size: 0.95rem; }
-        .nav-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 5px;
-        }
-        .nav-toggle span {
-            width: 25px;
-            height: 3px;
-            background-color: var(--primary-color);
-            border-radius: 3px;
-            transition: 0.3s;
-        }
-
-        /* --- 个人简介 --- */
-        .hero {
-            padding: 80px 0;
-            text-align: center;
-        }
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 20px;
-            border: 4px solid var(--bg-secondary);
-            box-shadow: var(--shadow);
-        }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--primary-color); }
-        .hero p { color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px; }
-        .social-btns { display: flex; justify-content: center; gap: 15px; }
-        .btn {
-            padding: 10px 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: var(--border-radius);
-            font-size: 0.9rem;
-        }
-        .btn:hover { background-color: var(--accent-color); color: white; }
-        .btn-outline {
-            padding: 10px 20px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: var(--border-radius);
-            font-size: 0.9rem;
-        }
-        .btn-outline:hover { background-color: var(--accent-color); color: white; }
-
-        /* --- 通用板块样式 --- */
-        section { padding: 60px 0; }
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 40px;
-            position: relative;
-            display: inline-block;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            width: 40%;
-            height: 4px;
-            background-color: var(--accent-color);
-            bottom: -10px;
-            left: 0;
-            border-radius: 2px;
-        }
-
-        /* --- 博客列表 --- */
-        .post-card {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            padding: 20px;
-            border-radius: var(--border-radius);
-            transition: 0.3s;
-            border: 1px solid #eee;
-        }
-        .post-card:hover {
-            box-shadow: var(--shadow);
-            transform: translateY(-2px);
-            border-color: var(--accent-color);
-        }
-        .post-date {
-            font-size: 0.85rem;
-            color: var(--accent-color);
-            font-weight: 600;
-            min-width: 100px;
-        }
-        .post-content h3 { margin-bottom: 8px; font-size: 1.3rem; }
-        .post-content p { color: var(--text-light); font-size: 0.95rem; }
-
-        /* --- 项目经历  --- */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .project-card {
-            background: var(--bg-secondary);
-            padding: 25px;
-            border-radius: var(--border-radius);
-            transition: 0.3s;
-            display: block;
-            color: inherit;
-            text-decoration: none;
-        }
-        .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border: 1px solid var(--accent-color); }
-        .project-card h3 { margin-bottom: 10px; color: var(--primary-color); }
-        .project-card p { font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px; }
-        .tags { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tag {
-            font-size: 0.75rem;
-            background: rgba(52, 152, 219, 0.1);
-            color: var(--accent-color);
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-
-        /* --- 页脚 --- */
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            border-top: 1px solid #eee;
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-
-        /* --- 移动端适配 --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .post-card { flex-direction: column; gap: 10px; }
-            .nav-links { 
-                position: fixed;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                background: white;
-                flex-direction: column;
-                align-items: center;
-                padding: 20px 0;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                transform: translateY(-150%);
-                transition: transform 0.3s ease;
-                z-index: 99;
-            }
-            .nav-links.active { transform: translateY(0); }
-            .nav-toggle { display: flex; }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -231,12 +32,12 @@
     <section id="home" class="hero">
         <div class="container">
             <!-- 头像链接 -->
-            <img src="pic\picture1.jpg" alt="Avatar" class="avatar">
+            <img src="pic/picture1.jpg" alt="Avatar" class="avatar">
             <h1>你好，我是 Jimmy</h1>
             <p>一个喜欢研究学习各种有意思的项目的练习生<br>人生犹旷野，走一步算一步。</p>
             <div class="social-btns">
                 <a href="https://github.com/thebrushs" class="btn">GitHub</a>
-                <a href="PDF\个人简历-1.pdf" class="btn-outline">简历下载</a>
+                <a href="PDF/个人简历-1.pdf" class="btn-outline">简历下载</a>
             </div>
         </div>
     </section>
@@ -332,9 +133,9 @@
     <!-- 页脚 -->
     <footer id="contact">
         <div class="container">
-            <p>&copy; 2025 Jimmy. Designed for GitHub.</p>
+            <p>&copy; 2026 Jimmy. Designed for GitHub.</p>
             <p style="margin-top: 10px;">
-                <a href="#">Email Me</a> | <a href="#">Twitter</a>
+                <a href="mailto:307587116@qq.com">Email Me</a> 
             </p>
         </div>
     </footer>
