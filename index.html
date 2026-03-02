@@ -141,13 +141,24 @@
             <div id="wechat-modal" class="modal" onclick="closeWechat()">
                 <div class="modal-content" onclick="event.stopPropagation()">
                     <span class="close-btn" onclick="closeWechat()">&times;</span>
-                    <h3>微信号</h3>
+                    <h3>微信联系</h3>
+                    <img src="pic/微信联系方式.png" alt="微信二维码" class="wechat-qr">
                     <p class="wechat-id">13288952224</p>
                     <button class="copy-btn" onclick="copyWechat()">复制微信号</button>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- 背景音乐 -->
+    <div class="music-player">
+        <button id="music-toggle" onclick="toggleMusic()">
+            <span id="music-icon">🎵</span>
+        </button>
+    </div>
+    <audio id="bgm" loop>
+        <source src="music/星と僕らと-目黒将司.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         // 汉堡菜单交互
@@ -183,6 +194,35 @@
                 alert('微信号已复制: 13288952224');
             });
         }
+
+        // 背景音乐控制
+        const bgm = document.getElementById('bgm');
+        const musicIcon = document.getElementById('music-icon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgm.pause();
+                musicIcon.textContent = '🎵';
+                isPlaying = false;
+            } else {
+                bgm.play();
+                musicIcon.textContent = '🔊';
+                isPlaying = true;
+            }
+        }
+
+        // 自动播放（需要用户交互后才能播放）
+        document.addEventListener('click', function autoPlay() {
+            if (!isPlaying) {
+                bgm.volume = 0.3;
+                bgm.play().then(() => {
+                    isPlaying = true;
+                    musicIcon.textContent = '🔊';
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', autoPlay);
+        }, { once: true });
     </script>
 </body>
 </html>
