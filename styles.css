@@ -231,41 +231,136 @@ footer {
 
 /* --- 微信二维码 --- */
 .wechat-qr {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 3%;
     margin: 15px auto;
     border-radius: 8px;
     display: block;
 }
 
+/* --- 邮箱弹窗 --- */
+.email-to {
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+.email-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.email-btn {
+    display: block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+    transition: all 0.3s;
+    color: white;
+}
+.email-btn.qq { background: #12B7F5; }
+.email-btn.qq:hover { background: #009FE3; }
+.email-btn.gmail { background: #EA4335; }
+.email-btn.gmail:hover { background: #C5221F; }
+.email-btn.outlook { background: #0078D4; }
+.email-btn.outlook:hover { background: #005A9E; }
+.email-btn.netease { background: #D43C33; }
+.email-btn.netease:hover { background: #B8332B; }
+
 /* --- 音乐播放器 --- */
 .music-player {
     position: fixed;
-    bottom: 20px;
+    top: 20px;
     right: 20px;
     z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 15px;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
 }
 .music-player button {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: none;
     background: var(--primary-color);
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+.music-player button span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 .music-player button:hover {
     background: var(--accent-color);
     transform: scale(1.1);
+}
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.volume-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.5rem;
+}
+#volume-slider {
+    width: 80px;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #e0e0e0;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+#volume-slider::-webkit-slider-thumb:hover {
+    background: var(--accent-color);
 }
 
 /* --- 移动端适配 --- */
 @media (max-width: 768px) {
     .hero h1 { font-size: 2rem; }
     .post-card { flex-direction: column; gap: 10px; }
+    .music-player {
+        top: auto;
+        bottom: 20px;
+        right: 10px;
+        padding: 6px 10px;
+    }
+    .music-player button {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1rem;
+    }
+    #volume-slider {
+        width: 60px;
+    }
     .nav-links { 
         position: fixed;
         top: 70px;

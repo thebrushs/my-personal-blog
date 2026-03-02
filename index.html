@@ -135,15 +135,37 @@
         <div class="container">
             <p>&copy; 2026 Jimmy. Copyright Reserved. Designed for GitHub.</p>
             <p style="margin-top: 10px;">
-                <a href="mailto:307587116@qq.com">Email Me</a> | 
+                <a href="javascript:void(0)" onclick="showEmail()">Email Me</a> | 
                 <a href="javascript:void(0)" onclick="showWechat()">WeChat</a>
             </p>
+            <div id="email-modal" class="modal" onclick="closeEmail()">
+                <div class="modal-content" onclick="event.stopPropagation()">
+                    <span class="close-btn" onclick="closeEmail()">&times;</span>
+                    <h3>选择邮箱发送</h3>
+                    <p class="email-to">发送至：307587116@qq.com</p>
+                    <div class="email-options">
+                        <a href="https://wx.mail.qq.com/home/index#/compose" target="_blank" class="email-btn qq" onclick="copyEmailFirst()">
+                            QQ邮箱
+                        </a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=307587116@qq.com" target="_blank" class="email-btn gmail">
+                            Gmail
+                        </a>
+                        <a href="https://outlook.live.com/mail/0/deeplink/compose?to=307587116@qq.com" target="_blank" class="email-btn outlook">
+                            Outlook
+                        </a>
+                        <a href="https://mail.163.com/js6/main.jsp?to=307587116@qq.com" target="_blank" class="email-btn netease">
+                            163邮箱
+                        </a>
+                    </div>
+                    <button class="copy-btn" onclick="copyEmail()" style="margin-top: 15px;">复制邮箱地址</button>
+                </div>
+            </div>
             <div id="wechat-modal" class="modal" onclick="closeWechat()">
                 <div class="modal-content" onclick="event.stopPropagation()">
                     <span class="close-btn" onclick="closeWechat()">&times;</span>
                     <h3>微信联系</h3>
                     <img src="pic/微信联系方式.png" alt="微信二维码" class="wechat-qr">
-                    <p class="wechat-id">13288952224</p>
+
                     <button class="copy-btn" onclick="copyWechat()">复制微信号</button>
                 </div>
             </div>
@@ -153,8 +175,12 @@
     <!-- 背景音乐 -->
     <div class="music-player">
         <button id="music-toggle" onclick="toggleMusic()">
-            <span id="music-icon">🎵</span>
+            <span id="music-icon">♪</span>
         </button>
+        <div class="volume-control">
+            <span class="volume-icon">🔊</span>
+            <input type="range" id="volume-slider" min="0" max="100" value="30" onchange="changeVolume(this.value)">
+        </div>
     </div>
     <audio id="bgm" loop>
         <source src="music/星と僕らと-目黒将司.mp3" type="audio/mpeg">
@@ -182,6 +208,22 @@
             });
         });
 
+        // 邮箱弹窗功能
+        function showEmail() {
+            document.getElementById('email-modal').style.display = 'flex';
+        }
+        function closeEmail() {
+            document.getElementById('email-modal').style.display = 'none';
+        }
+        function copyEmail() {
+            navigator.clipboard.writeText('307587116@qq.com').then(() => {
+                alert('邮箱已复制: 307587116@qq.com');
+            });
+        }
+        function copyEmailFirst() {
+            navigator.clipboard.writeText('307587116@qq.com');
+        }
+
         // 微信弹窗功能
         function showWechat() {
             document.getElementById('wechat-modal').style.display = 'flex';
@@ -198,18 +240,23 @@
         // 背景音乐控制
         const bgm = document.getElementById('bgm');
         const musicIcon = document.getElementById('music-icon');
+        const volumeSlider = document.getElementById('volume-slider');
         let isPlaying = false;
 
         function toggleMusic() {
             if (isPlaying) {
                 bgm.pause();
-                musicIcon.textContent = '🎵';
+                musicIcon.textContent = '⏸';
                 isPlaying = false;
             } else {
                 bgm.play();
-                musicIcon.textContent = '🔊';
+                musicIcon.textContent = '♪';
                 isPlaying = true;
             }
+        }
+
+        function changeVolume(value) {
+            bgm.volume = value / 100;
         }
 
         // 自动播放（需要用户交互后才能播放）
@@ -218,7 +265,7 @@
                 bgm.volume = 0.3;
                 bgm.play().then(() => {
                     isPlaying = true;
-                    musicIcon.textContent = '🔊';
+                    musicIcon.textContent = '♫';
                 }).catch(() => {});
             }
             document.removeEventListener('click', autoPlay);
